@@ -1,41 +1,37 @@
-const { faker } = require('@faker-js/faker');
+const boom = require('@hapi/boom');
+
+const pool = require('../libs/postgres.pool');
 
 class UsersService {
 
   constructor() {
-    this.users = [];
-    this.generate();
+    this.pool = pool;
+    this.pool.on('error', (error) => console.log(error));
   }
 
-  generate() {
-    const limit = 10;
-    for( let i = 0; i < limit; i++) {
-      this.users.push({
-        id: faker.string.uuid(),
-        firstname: faker.person.firstName(),
-        lastname: faker.person.lastName(),
-      });
-    }
+  async create(data) {
+    return data;
   }
 
-  create() {
-
+  async find() {
+    const query = 'SELECT * FROM tasks';
+    const response = await this.pool.query(query);
+    return response.rows;
   }
 
-  find() {
-    return this.users;
+  async findOne(id) {
+    return { id };
   }
 
-  findOne(id) {
-    return this.users.find(item => item.id === id);
+  async update(id, changes) {
+    return {
+      id,
+      changes,
+    };
   }
 
-  update() {
-
-  }
-
-  delete() {
-
+  async delete(id) {
+    return { id }
   }
 
 }

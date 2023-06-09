@@ -1,0 +1,23 @@
+version: '3.3'
+
+services:
+  postgres:
+    container_name: postgres_ms
+    image: postgres:13
+    environment:
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    ports:
+      - 5432
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+
+  pgadmin:
+    container_name: pgadmin_ms
+    image: dpage/pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=${PGA_EMAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${PGA_PASSWORD}
+    ports:
+      - 5050:80
