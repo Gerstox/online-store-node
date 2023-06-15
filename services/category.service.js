@@ -23,12 +23,16 @@ class CategoryService {
     return category;
   }
 
-  async update() {
-
+  async update(id, changes) {
+    const category = await this.findOne(id);
+    const response = await category.update(changes);
+    return response;
   }
 
-  async delete() {
-
+  async delete(id) {
+    const category = await this.findOne(id);
+    await category.destroy();
+    return { id }
   }
 
 }
