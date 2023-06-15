@@ -1,11 +1,11 @@
 const express = require('express');
 
-const UsersService = require('../services/users.service');
+const UserService = require('../services/user.service');
 const validatorHandler = require('../middlewares/validator.handler');
 const { updateUserSchema, createUserSchema, getUserSchema } = require('../schemas/user.schema');
 
 const router = express.Router();
-const service = new UsersService();
+const service = new UserService();
 
 router.get('/', async (request, response, next) => {
   try {
@@ -65,7 +65,5 @@ router.delete('/:id',
       next(error);
     }
 });
-
-
 
 module.exports = router;
