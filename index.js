@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const routerApi = require('./routes');
+const { checkApiKey } = require('./middlewares/auth.handler');
 
 const { logErrors, errorHandler, boomErrorHandler, ormErrorHandler } = require('./middlewares/error.handler');
 
@@ -19,6 +20,10 @@ const options = {
 
 app.use(express.json());
 app.use(cors(options));
+
+app.get('/nueva-ruta', checkApiKey, (request, response) => {
+  response.send('En la nueva ruta');
+});
 
 app.get('/api', (request, response) => {
   response.send('Hello World!');
