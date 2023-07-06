@@ -20,6 +20,7 @@ const options = {
 
 app.use(express.json());
 app.use(cors(options));
+require('./utils/auth');
 
 app.get('/nueva-ruta', checkApiKey, (request, response) => {
   response.send('En la nueva ruta');
