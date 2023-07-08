@@ -1,26 +1,42 @@
 const express = require('express');
 const passport = require('passport');
-const jwt = require('jsonwebtoken');
-const { config } = require('../config/config');
+
+const AuthService = require('../services/auth.service');
 
 const router = express.Router();
+
+const service = new AuthService();
 
 router.post('/login',
   passport.authenticate('local', { session: false }),
   async (request, response, next) => {
     try {
       const user = request.user;
-      const payload = {
-        sub: user.id,
-        role: user.role
-      };
+      response.json(service.signToken(user));
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 
-      const token = jwt.sign(payload, config.jwtSecret);
+router.post('/recovery',
+  async (request, response, next) => {
+    try {
+      const { email } = request.body;
+      const result = await service.sendRecovery(email);
+      response.json(result);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 
-      response.json({
-        user,
-        token
-      });
+router.post('/change-password',
+  async (request, response, next) => {
+    try {
+      const { token, newPassword } = request.body;
+      const result = await service.changePassword(token, newPassword);
+      response.json(result);
     } catch (error) {
       next(error);
     }
